@@ -10,6 +10,7 @@ const DoctorDashboard = () => {
         <h2>Doctor Dashboard</h2>
         <div className="card">
           <h3>Anonymized Patients</h3>
+          <p style={{color:"#374151"}}>To protect privacy, patient identifiers are anonymized for doctors. Contact admins if de-anonymization is required for clinical reasons.</p>
           <PatientList doctorView />
         </div>
       </div>

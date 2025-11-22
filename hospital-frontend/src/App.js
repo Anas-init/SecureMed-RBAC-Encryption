@@ -7,6 +7,7 @@ import ReceptionDashboard from "./pages/ReceptionDashboard";
 import PatientForm from "./components/Patients/PatientForm";
 import PatientDetails from "./components/Patients/PatientDetails";
 import UsersList from "./components/Users/UsersList";
+import AddUser from "./components/Users/AddUser";      // NEW
 import LogsPage from "./components/Logs/LogsPage";
 import HealthCheck from "./components/Health/HealthCheck";
 import ProtectedRoute from "./components/Shared/ProtectedRoute";
@@ -16,7 +17,6 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-
       <Route path="/" element={<Navigate to="/login" replace />} />
 
       <Route path="/admin" element={
@@ -34,6 +34,33 @@ function App() {
       <Route path="/reception" element={
         <ProtectedRoute allowedRoles={["receptionist"]}>
           <ReceptionDashboard />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/users" element={
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <>
+            <Navbar />
+            <UsersList />
+          </>
+        </ProtectedRoute>
+      } />
+
+      <Route path="/users/new" element={
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <>
+            <Navbar />
+            <AddUser />
+          </>
+        </ProtectedRoute>
+      } />
+
+      <Route path="/logs" element={
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <>
+            <Navbar />
+            <LogsPage />
+          </>
         </ProtectedRoute>
       } />
 
@@ -60,24 +87,6 @@ function App() {
           <>
             <Navbar />
             <PatientDetails />
-          </>
-        </ProtectedRoute>
-      } />
-
-      <Route path="/users" element={
-        <ProtectedRoute allowedRoles={["admin"]}>
-          <>
-            <Navbar />
-            <UsersList />
-          </>
-        </ProtectedRoute>
-      } />
-
-      <Route path="/logs" element={
-        <ProtectedRoute allowedRoles={["admin"]}>
-          <>
-            <Navbar />
-            <LogsPage />
           </>
         </ProtectedRoute>
       } />

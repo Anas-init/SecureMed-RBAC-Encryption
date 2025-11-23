@@ -20,7 +20,7 @@ const Navbar = () => {
         <small style={{color:"#6b7280"}}>Privacy & RBAC Demo</small>
       </div>
       <div className="nav">
-        <Link className="link" to="/">Home</Link>
+        {/* <Link className="link" to="/">Home</Link> */}
         {user && user.role === "admin" && <Link className="link" to="/admin">Admin</Link>}
         {user && user.role === "doctor" && <Link className="link" to="/doctor">Doctor</Link>}
         {user && user.role === "receptionist" && <Link className="link" to="/reception">Reception</Link>}

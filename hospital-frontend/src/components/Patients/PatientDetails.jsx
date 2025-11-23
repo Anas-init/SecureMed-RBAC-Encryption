@@ -15,10 +15,10 @@ const PatientDetails = () => {
     (async () => {
       try {
         const res = await api.get("/api/patients");
-        const p = res.data.find(x => String(x.patient_id) === String(id));
+        const p = res.data.patients.find(x => String(x.id) === String(id));
         if (!p) {
           const r2 = await api.get("/api/patients/masked");
-          const p2 = r2.data.find(x => String(x.patient_id) === String(id));
+          const p2 = r2.data.find(x => String(x.id) === String(id));
           setPatient(p2 || null);
         } else setPatient(p);
       } catch (err) {
@@ -34,7 +34,7 @@ const PatientDetails = () => {
       alert("Anonymized");
       // reload
       const res = await api.get("/api/patients");
-      setPatient(res.data.find(x => String(x.patient_id) === String(id)) || null);
+      setPatient(res.data.patients.find(x => String(x.id) === String(id)) || null);
     } catch (err) {
       alert("Anonymize failed");
     }
@@ -46,11 +46,11 @@ const PatientDetails = () => {
   return (
     <div className="container">
       <div className="card" style={{maxWidth:700, margin:"20px auto"}}>
-        <h3>Patient #{patient.patient_id}</h3>
+        <h3>Patient #{patient.id}</h3>
         <p><strong>Name:</strong> {patient.anonymized_name ?? patient.name}</p>
         <p><strong>Contact:</strong> {patient.anonymized_contact ?? patient.contact}</p>
         <p><strong>Diagnosis:</strong> {patient.diagnosis ?? "-"}</p>
-        <p><strong>Date Added:</strong> {patient.date_added ?? "-"}</p>
+        <p><strong>Date Added:</strong> {patient.dateAdded ?? "-"}</p>
         <div style={{display:"flex", gap:8}}>
           <button className="btn" onClick={() => navigate(-1)}>Back</button>
           {user?.role === "admin" && (

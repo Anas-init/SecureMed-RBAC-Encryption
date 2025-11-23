@@ -45,6 +45,7 @@ namespace First_Web_Api_App.Controllers
 
             return Ok(new
             {
+                role = UserDetails.Role,
                 token = CreateToken(UserDetails)
             });
         }

@@ -8,7 +8,7 @@ const LogsPage = () => {
   const load = async () => {
     try {
       const res = await api.get("/api/logs");
-      setLogs(res.data || []);
+      setLogs(res.data.logs || []);
     } catch (err) {
       setError("Failed to fetch logs");
     }

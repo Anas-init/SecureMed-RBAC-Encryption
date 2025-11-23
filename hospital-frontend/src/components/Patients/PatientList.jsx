@@ -20,7 +20,10 @@ const PatientList = ({ adminView=false, doctorView=false, receptionistView=false
       else {
         res = user?.role === "admin" ? await fetchAllPatients() : await fetchMaskedPatients();
       }
-      setPatients(res.data || []);
+
+      console.log(res);
+      
+      setPatients(res.data.patients || []);
     } catch (err) {
       setError(err?.response?.data?.detail || "Failed to load patients");
     } finally {
@@ -34,7 +37,7 @@ const PatientList = ({ adminView=false, doctorView=false, receptionistView=false
     if (!window.confirm("Delete patient? This action is irreversible.")) return;
     try {
       await deletePatient(id);
-      setPatients(patients.filter(p => p.patient_id !== id));
+      setPatients(patients.filter(p => p.id !== id));
     } catch (err) {
       alert("Delete failed: " + (err?.response?.data?.detail || err.message));
     }
@@ -84,21 +87,21 @@ const PatientList = ({ adminView=false, doctorView=false, receptionistView=false
           </thead>
           <tbody>
             {patients.map(p => (
-              <tr key={p.patient_id}>
-                <td>{p.patient_id}</td>
-                <td>{p.anonymized_name ?? p.name ?? "-"}</td>
-                <td>{p.anonymized_contact ?? p.contact ?? "-"}</td>
+              <tr key={p.id}>
+                <td>{p.id}</td>
+                <td>{p.anonymizedName == "" ? p.name : p.anonymizedName}</td>
+                <td>{p.anonymizedContact == "" ? p.contact : p.anonymizedContact}</td>
                 <td>{p.diagnosis ?? "-"}</td>
-                <td>{p.date_added ? new Date(p.date_added).toLocaleString() : "-"}</td>
+                <td>{p.dateAdded ? new Date(p.dateAdded).toLocaleString() : "-"}</td>
                 <td>
-                  <Link className="link" to={`/patients/${p.patient_id}`}>View</Link>
+                  <Link className="link" to={`/patients/${p.id}`}>View</Link>
                   { (user?.role === "admin" || user?.role === "receptionist") && (
-                    <Link style={{marginLeft:8}} className="link" to={`/patients/${p.patient_id}/edit`}>Edit</Link>
+                    <Link style={{marginLeft:8}} className="link" to={`/patients/${p.id}/edit`}>Edit</Link>
                   )}
                   { user?.role === "admin" && (
                     <>
-                      <button style={{marginLeft:8}} className="btn ghost" onClick={() => handleDelete(p.patient_id)}>Delete</button>
-                      <button style={{marginLeft:8}} className="btn" onClick={() => handleAnonymize(p.patient_id)}>Anonymize</button>
+                      <button style={{marginLeft:8}} className="btn ghost" onClick={() => handleDelete(p.id)}>Delete</button>
+                      <button style={{marginLeft:8}} className="btn" onClick={() => handleAnonymize(p.id)}>Anonymize</button>
                     </>
                   )}
                 </td>

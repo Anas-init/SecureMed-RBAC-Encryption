@@ -10,6 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")  // React dev server
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -70,10 +81,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseMiddleware<ActivityLoggingMiddleware>();
 app.UseAuthorization();

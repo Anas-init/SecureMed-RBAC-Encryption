@@ -8,7 +8,7 @@ const UsersList = () => {
   const load = async () => {
     try {
       const res = await api.get("/api/users");
-      setUsers(res.data || []);
+      setUsers(res.data.users || []);
     } catch (err) {
       setError("Failed to load users");
     }
@@ -20,7 +20,7 @@ const UsersList = () => {
     if (!window.confirm("Delete user?")) return;
     try {
       await api.delete(`/api/users/${id}`);
-      setUsers(users.filter(u => u.user_id !== id));
+      setUsers(users.filter(u => u.id !== id));
     } catch (err) {
       alert("Delete failed");
     }
@@ -35,13 +35,13 @@ const UsersList = () => {
           <thead><tr><th>ID</th><th>Username</th><th>Role</th><th>Actions</th></tr></thead>
           <tbody>
             {users.map(u => (
-              <tr key={u.user_id}>
-                <td>{u.user_id}</td>
+              <tr key={u.id}>
+                <td>{u.id}</td>
                 <td>{u.username}</td>
                 <td>{u.role}</td>
                 <td>
                   {/* Ideally add edit user/role UI */}
-                  <button className="btn ghost" onClick={() => handleDelete(u.user_id)}>Delete</button>
+                  <button className="btn ghost" onClick={() => handleDelete(u.id)}>Delete</button>
                 </td>
               </tr>
             ))}

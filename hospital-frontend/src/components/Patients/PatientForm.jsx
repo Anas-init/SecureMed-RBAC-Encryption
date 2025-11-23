@@ -12,7 +12,7 @@ const PatientForm = () => {
     name: "",
     contact: "",
     diagnosis: "",
-    date_added: ""
+    dateAdded: ""
   });
   const [error, setError] = useState("");
 
@@ -23,9 +23,11 @@ const PatientForm = () => {
       (async () => {
         try {
           const res = await api.get("/api/patients");
-          const p = res.data.find(x => String(x.patient_id) === String(id));
-          if (p) setForm({ name: p.name || "", contact: p.contact || "", diagnosis: p.diagnosis || "", date_added: p.date_added || ""});
+          const p = res.data.patients.find(x => String(x.id) === String(id));
+          if (p) setForm({ name: p.name || "", contact: p.contact || "", diagnosis: p.diagnosis || "", dateAdded: p.dateAdded || ""});
         } catch (err) {
+          console.log(err);
+          
           setError("Failed to load patient for editing");
         }
       })();
@@ -63,7 +65,7 @@ const PatientForm = () => {
           </div>
           <div className="form-row">
             <input className="input" name="diagnosis" placeholder="Diagnosis" value={form.diagnosis} onChange={handleChange}/>
-            <input className="input" name="date_added" placeholder="YYYY-MM-DD" value={form.date_added} onChange={handleChange}/>
+            <input className="input" name="dateAdded" placeholder="YYYY-MM-DD" value={form.dateAdded} onChange={handleChange}/>
           </div>
           <div style={{display:"flex", gap:8}}>
             <button className="btn" type="submit">{isEdit ? "Update" : "Create"}</button>

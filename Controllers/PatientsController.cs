@@ -38,7 +38,7 @@ namespace First_Web_Api_App.Controllers
         }
 
         [HttpGet("Anonymize")]
-        [Authorize(Roles = "admin,doctor,receptionist")]
+        [Authorize]
         public async Task<IActionResult> GetPatientMaskedData ()
         {
             var patients = await db.Patients.Select(
